@@ -1,0 +1,72 @@
+import java.util.*;
+
+class BankAccount {
+    private String accountID;
+    private double accountBalance;
+    private String accountOwner;
+    private List<Transaction> transactionList;
+
+    public BankAccount(String accountID, String accountOwner) {
+        this.accountID = accountID;
+        this.accountOwner = accountOwner;
+        this.accountBalance = 0.0;
+        this.transactionList = new ArrayList<>();
+    }
+
+    public void deposit(double depositAmount) {
+        if (depositAmount <= 0) {
+            System.out.println("Invalid amount for deposit.");
+            return;
+        }
+        accountBalance += depositAmount;
+        transactionList.add(new Transaction("Deposit", depositAmount));
+        System.out.println("Deposited: $" + depositAmount);
+    }
+
+    public void withdraw(double withdrawalAmount) {
+        if (withdrawalAmount <= 0 || withdrawalAmount > accountBalance) {
+            System.out.println("Invalid amount for withdrawal.");
+            return;
+        }
+        accountBalance -= withdrawalAmount;
+        transactionList.add(new Transaction("Withdrawal", -withdrawalAmount));
+        System.out.println("Withdrawn: $" + withdrawalAmount);
+    }
+
+    public void displayBalance() {
+        System.out.println("Account Balance: $" + accountBalance);
+    }
+
+    public void displayTransactionHistory() {
+        System.out.println("Transaction History:");
+        for (Transaction transaction : transactionList) {
+            System.out.println(transaction);
+        }
+    }
+}
+
+class Transaction {
+    private String transactionType;
+    private double transactionAmount;
+
+    public Transaction(String transactionType, double transactionAmount) {
+        this.transactionType = transactionType;
+        this.transactionAmount = transactionAmount;
+    }
+
+    @Override
+    public String toString() {
+        return transactionType + ": $" + transactionAmount;
+    }
+}
+
+public class BankApplication {
+    public static void main(String[] args) {
+        BankAccount userAccount = new BankAccount("12345", "John Doe");
+
+        userAccount.deposit(1000);
+        userAccount.withdraw(500);
+        userAccount.displayBalance();
+        userAccount.displayTransactionHistory();
+    }
+}
